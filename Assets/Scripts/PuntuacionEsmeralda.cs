@@ -4,54 +4,105 @@ using UnityEngine;
 
 public class PuntuacionEsmeralda : MonoBehaviour
 {
+    public ModeloDatos modeloDatos;
     public int bonificacion;
+    public GameObject proximaActivacion;
+    
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+
         if (collision.CompareTag("DadoP1"))
         {
-            Debug.Log("me ha dado");
-            collision.gameObject.transform.SetParent(transform);
+            GameManager.turnoJugador1 = false;
+            proximaActivacion.SetActive(true);
 
-            int valorDado = collision.gameObject.GetComponent<DragAndDrop>().valor;
-            if (valorDado + bonificacion == 6)
+            if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 1 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 2)
             {
-                GameManager.p1_esmeraldas++;
-                GameManager.p1_esmeraldas++;
-                GameManager.p1_esmeraldas++;
+                modeloDatos.subirEsmeralda_P1();
             }
-            else if (valorDado + bonificacion == 4 || valorDado + bonificacion == 3 || valorDado == 5)
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 3 && collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion <= 5)
             {
-                GameManager.p1_esmeraldas++;
-                GameManager.p1_esmeraldas++;
+                modeloDatos.subirEsmeralda_P1();
+                modeloDatos.subirEsmeralda_P1();
             }
-            else if (valorDado + bonificacion <= 2)
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 6)
             {
-                GameManager.p1_esmeraldas++;
+                modeloDatos.subirEsmeralda_P1();
+                modeloDatos.subirEsmeralda_P1();
+                modeloDatos.subirEsmeralda_P1();
             }
+
+           
         }
-
-
         else if (collision.CompareTag("DadoP2"))
         {
-            collision.gameObject.transform.SetParent(transform);
-            //collision.gameObject.transform.position = new Vector2(0, 0);
-            int valorDado = collision.gameObject.GetComponent<DragAndDrop>().valor;
-            if (valorDado + bonificacion >= 6)
-            {
-                GameManager.p2_esmeraldas++;
-                GameManager.p2_esmeraldas++;
-            }
-            else if (valorDado + bonificacion == 3 || valorDado + bonificacion == 4 || valorDado + bonificacion == 5) 
-            {
-                GameManager.p2_esmeraldas++;
-                GameManager.p2_esmeraldas++;
+            GameManager.turnoJugador1 = true;
+            proximaActivacion.SetActive(true);
 
-            }
-            else if(valorDado + bonificacion <= 2)
+            if (collision.gameObject.GetComponent<DragAndDrop>().valor +bonificacion == 1 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 2)
             {
-                GameManager.p2_esmeraldas++;
+                modeloDatos.subirEsmeralda_P2();
             }
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 3 && collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion<= 5)
+            {
+                modeloDatos.subirEsmeralda_P2();
+                modeloDatos.subirEsmeralda_P2();
+            }
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 6)
+            {
+                modeloDatos.subirEsmeralda_P2();
+                modeloDatos.subirEsmeralda_P2();
+                modeloDatos.subirEsmeralda_P2();
+            }
+           
         }
     }
+
+            private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("DadoP1"))
+        {
+            GameManager.turnoJugador1 = true;
+            proximaActivacion.SetActive(false);
+
+            if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 1 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 2)
+            {
+                modeloDatos.bajarEsmeralda_P1();
+            }
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion>= 3 && collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion<= 5)
+            {
+                modeloDatos.bajarEsmeralda_P1();
+                modeloDatos.bajarEsmeralda_P1();
+            }
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 6)
+            {
+                modeloDatos.bajarEsmeralda_P1();
+                modeloDatos.bajarEsmeralda_P1();
+                modeloDatos.bajarEsmeralda_P1();
+            }
+            
+        }
+        else if (collision.CompareTag("DadoP2"))
+        {
+            if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 1 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 2)
+            {
+                modeloDatos.bajarEsmeralda_P2();
+            }
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 3 && collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion <= 5)
+            {
+                modeloDatos.bajarEsmeralda_P2();
+                modeloDatos.bajarEsmeralda_P2();
+            }
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 6)
+            {
+                modeloDatos.bajarEsmeralda_P2();
+                modeloDatos.bajarEsmeralda_P2();
+                modeloDatos.bajarEsmeralda_P2();
+            }
+            GameManager.turnoJugador1 = false;
+            proximaActivacion.SetActive(false);
+        }
+    }
+
 }

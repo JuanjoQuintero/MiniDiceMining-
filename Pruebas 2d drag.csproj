@@ -78,15 +78,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\DiceManagement.cs" />
     <Compile Include="Assets\Scripts\DragAndDrop.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GestorBotones.cs" />
     <Compile Include="Assets\Scripts\Instanciador.cs" />
+    <Compile Include="Assets\Scripts\Inutilizar.cs" />
     <Compile Include="Assets\Scripts\Mercado.cs" />
-    <Compile Include="Assets\Scripts\Puntuacion.cs" />
+    <Compile Include="Assets\Scripts\ModeloDatos.cs" />
     <Compile Include="Assets\Scripts\PuntuacionEsmeralda.cs" />
     <Compile Include="Assets\Scripts\PuntuacionRubi.cs" />
     <Compile Include="Assets\Scripts\PuntuacionZafiro.cs" />
+    <Compile Include="Assets\Scripts\TurnoJugador.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

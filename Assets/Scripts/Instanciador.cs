@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class Instanciador : MonoBehaviour {
 
-    public GameObject[] dado;
+    public GameObject dado;
 
 
 	// Use this for initialization
-	void Start () {
-        Instantiate(dado[Random.Range(0, dado.Length)],transform.position, Quaternion.identity);
+	void Awake () {
+        GeneraDados();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    void GeneraDados()
+    {
+        Instantiate(dado, transform.position, Quaternion.identity);
+    }
 }

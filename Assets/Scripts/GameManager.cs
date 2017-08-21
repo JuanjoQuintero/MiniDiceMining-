@@ -9,6 +9,9 @@
     public static int p2_rubis;
     public static int p2_oro;
 
-
-
+    public static bool turnoJugador1 = true;
+    public static bool musica = true;
+    public static bool ganadorP1 = true;
+    public static bool esEmpate = false;
+    public static bool resolverDados = false;
 }

@@ -4,44 +4,77 @@ using UnityEngine;
 
 public class PuntuacionRubi : MonoBehaviour
 {
-
+    public ModeloDatos modeloDatos;
+    
     void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        if (collision.CompareTag("DadoP1") )
-              {
-            Debug.Log("me ha dado");
-            collision.gameObject.transform.SetParent(gameObject.transform);
 
-            int valorDado = collision.gameObject.GetComponent<DragAndDrop>().valor;
-            if (valorDado == 6)
-            {
-                GameManager.p1_rubis++;
-                GameManager.p1_rubis++;
+        if (collision.gameObject.CompareTag("DadoP1"))
+        {
+            
+            if (collision.gameObject.GetComponent<DragAndDrop>().valor == 5) { 
+            
+                modeloDatos.subirRubis_P1();
             }
-            else if (valorDado == 5)
+            
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor == 6)
             {
-                GameManager.p1_rubis++;
-
+                modeloDatos.subirRubis_P1();
+                modeloDatos.subirRubis_P1();
             }
+           
+            GameManager.turnoJugador1 = false;
+            
         }
+        else if (collision.CompareTag("DadoP2"))
+        {
+            if (collision.gameObject.GetComponent<DragAndDrop>().valor == 5)
+            {
+                modeloDatos.subirRubis_P2();
+            }
+            else if (collision.gameObject.GetComponent<DragAndDrop>().valor == 6)
+            {
+                modeloDatos.subirRubis_P2();
+                modeloDatos.subirRubis_P2();
+            }
+            GameManager.turnoJugador1 = true;
+        }
+    }
 
+   private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("DadoP1"))
+        { 
+                if (collision.gameObject.GetComponent<DragAndDrop>().valor == 5)
+                {
+                    modeloDatos.bajarRubis_P1();
+                }
+                else if (collision.gameObject.GetComponent<DragAndDrop>().valor == 6)
+                {
+                    modeloDatos.bajarRubis_P1();
+                    modeloDatos.bajarRubis_P1();
+                }
+            GameManager.turnoJugador1 = true;
+        }
 
         else if (collision.CompareTag("DadoP2"))
         {
-            collision.gameObject.transform.SetParent(gameObject.transform);
-            //collision.gameObject.transform.position = new Vector2(0, 0);
-            int valorDado = collision.gameObject.GetComponent<DragAndDrop>().valor;
-            if (valorDado == 6)
-            {
-                GameManager.p2_rubis++;
-                GameManager.p2_rubis++;
-            }
-            else if (valorDado == 5)
-            {
-                GameManager.p2_rubis++;
+                if (collision.gameObject.GetComponent<DragAndDrop>().valor == 5)
+                {
 
+                    modeloDatos.bajarRubis_P2();
+                }
+                else if (collision.gameObject.GetComponent<DragAndDrop>().valor == 6)
+                {
+                    modeloDatos.bajarRubis_P2();
+                    modeloDatos.bajarRubis_P2();
+                }
+            GameManager.turnoJugador1 = false;
             }
         }
-    }
+
+    
 }
+
+
+

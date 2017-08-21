@@ -4,97 +4,132 @@ using UnityEngine;
 
 public class DragAndDrop : MonoBehaviour
 {
-  
-   public Vector2 startPosition;
-
-    public int valor;
-
+    public Sprite[] imagenCara;
+    public Vector2 startPosition;
+   
+   
+    private float limiteVertical = 4.4f;
+    private float limiteHorizontal = 8.3f;
+    public int puntos = 0;
+    public int valor = 0;
     private Animator anim;
-    // Use this for initialization
+
     private void Awake()
     {
+      
         startPosition = new Vector2(transform.position.x, transform.position.y);
-        
-        //anim = GetComponent<Animator>();
+        valor = (int)Random.Range(0, imagenCara.Length) + 1;
+        gameObject.GetComponent<SpriteRenderer>().sprite = imagenCara[valor - 1];
     }
 
 
     void Start()
     {
-        // anim.SetTrigger("Inicial");
+        
 
     }
 
     // Update is called once per frame
     void Update()
     {
+       
 
         //Codigo para mantener un sprite 2d dentro de los límites de la pantalla
-        if (transform.position.x >= 8.2f)
+        if (transform.position.x >= limiteHorizontal)
         {
-            transform.position = new Vector3(8.2f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(limiteHorizontal, transform.position.y, transform.position.z);
         }
-        else if (transform.position.x <= -8.2f)
+        else if (transform.position.x <= -limiteHorizontal)
         {
-            transform.position = new Vector3(-8.2f, transform.position.y, transform.position.z);
-        }
-
-        if (transform.position.y <= -4.4f)
-        {
-            transform.position = new Vector3(transform.position.x, -4.4f, transform.position.z);
-        }
-        if (transform.position.y >= 4.4f)
-        {
-            transform.position = new Vector3(transform.position.x, 4.4f, transform.position.z);
+            transform.position = new Vector3(-limiteHorizontal, transform.position.y, transform.position.z);
         }
 
+        if (transform.position.y >= limiteVertical)
+        {
+            transform.position = new Vector3(transform.position.x, limiteVertical, transform.position.z);
+        }
+        else if (transform.position.y <= -limiteVertical)
+        {
+            transform.position = new Vector3(transform.position.x, -limiteVertical, transform.position.z);
+        }
+ }
 
-
-    }
-
-
+   
     private void OnMouseDown()
+    {    
+        OnMouseDrag();      
+    }
+     
+   void OnMouseDrag()
     {
-        OnMouseDrag();
+        //if (GameManager.turnoJugador1 == true && gameObject.CompareTag("DadoP1"))
+            EstoEselDrag();
     }
 
-    void OnMouseDrag()
+    // Cuando soltamos el dado, vuelve a la posicion establecida, que cambia según el espacio e el que dejamos el dado
+    private void OnMouseUp()
+        {        
+            gameObject.transform.SetPositionAndRotation(startPosition, Quaternion.identity);       
+        }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    { 
+        if (collision.gameObject.tag == "Rubi")
+        {
+
+            startPosition = collision.gameObject.transform.position;
+            transform.SetPositionAndRotation(collision.transform.position, Quaternion.identity);
+
+        }
+
+        else if (collision.gameObject.tag == "Zafiro")
+        {
+            startPosition = collision.gameObject.transform.position;
+            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
+        else if (collision.gameObject.tag == "Esmeralda")
+        {
+            startPosition = collision.gameObject.transform.position;
+            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
+        else if (collision.gameObject.tag == "Mercado")
+        {
+            startPosition = collision.gameObject.transform.position;
+            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
+    }
+    
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        //codigo para arrastar un objeto en funcion de la posicion del raton
+        if (collision.gameObject.tag == "Rubi" )
+        {
+         transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
+
+        else if (collision.gameObject.tag == "Zafiro")
+        {
+           
+            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
+
+        else if (collision.gameObject.tag == "Esmeralda")
+        {
+            
+            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
+        else if (collision.gameObject.tag == "Mercado")
+        {
+            
+            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+        }
+        
+    }
+    public void EstoEselDrag()
+    {
         float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
         transform.position = new Vector3(pos_move.x, pos_move.y, transform.position.y);
-
-
-
     }
-
-    // Código para centrar el dado en el espacio reservado, se consigue estableciendo al dado como hijo en el script de puntuación de cada materia.
-   /* private void OnMouseUp()
-    {
-       if (transform.parent != null && ((gameObject.transform.position.x >= transform.parent.position.x - 1.5 && gameObject.transform.position.x <= transform.parent.position.x + 1.5) &&
-            (gameObject.transform.position.y >= transform.parent.position.y - 1.5 && gameObject.transform.position.y <= transform.parent.position.y + 1.5)))
-                { 
-                startPosition = transform.parent.position;
-                gameObject.transform.SetPositionAndRotation(startPosition, Quaternion.identity);
-       
-                }
-
-            else if(transform.parent == null)
-            
-            {
-                gameObject.transform.SetPositionAndRotation(startPosition, Quaternion.identity);
-            }
-        }
-        */
-
-
-    }
-
-
-
-        
-
-
-
-
+    
+}
