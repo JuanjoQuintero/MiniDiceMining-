@@ -7,14 +7,42 @@ public class PuntuacionZafiro : MonoBehaviour
     public int bonificacion = 0;
     public ModeloDatos modeloDatos;
     public GameObject proximaActivacion;
-    
+    public int contadorDado = 0;
+    public bool hayDado = false;
+    public int contadorActivacion;
 
-  
+    public void Update()
+    {
+        if (contadorDado > 0)
+        {
+            hayDado = true;
+        }
+        else if (contadorDado == 0)
+        {
+            hayDado = false;
+        }
+
+        if(contadorActivacion > 0)
+        {
+            proximaActivacion.SetActive(true);
+        }
+        else if(contadorActivacion == 0)
+        {
+            proximaActivacion.SetActive(false);
+        }
+
+    }
+
+
+
+
 
     void OnTriggerEnter2D(Collider2D collision)
         {
+        contadorDado++;
+        contadorActivacion++;
 
-            if (collision.CompareTag("DadoP1"))
+        if (collision.gameObject.CompareTag("DadoP1"))
             {
                 if ((collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 3 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 4))
                 { 
@@ -23,16 +51,18 @@ public class PuntuacionZafiro : MonoBehaviour
                 }
                 else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 5)
                 {
-                if (collision.transform.position == transform.position)
+                
                     modeloDatos.subirZafiro_P1();
                     modeloDatos.subirZafiro_P1();
                 }
 
-            GameManager.turnoJugador1 = false; 
-            proximaActivacion.SetActive(true);
+            GameManager.turnoJugador1 = false;
+           
+
+
 
         }
-            else if (collision.CompareTag("DadoP2"))
+            else if (collision.gameObject.CompareTag("DadoP2"))
             {
                 if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 3 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 4)
                 {
@@ -44,13 +74,20 @@ public class PuntuacionZafiro : MonoBehaviour
                     modeloDatos.subirZafiro_P2();
             }
             GameManager.turnoJugador1 = true;
-            proximaActivacion.SetActive(true);
-        }
+
+            
+               
+               
+            
+            }
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.CompareTag("DadoP1"))
+        contadorDado--;
+        contadorActivacion--;
+
+        if (collision.gameObject.CompareTag("DadoP1"))
             {
                 if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 3 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 4)
                 {
@@ -62,14 +99,13 @@ public class PuntuacionZafiro : MonoBehaviour
                     modeloDatos.bajarZafiro_P1();
                 }
             GameManager.turnoJugador1 = true;
-            proximaActivacion.SetActive(false);
+            
         }
 
-            else if (collision.CompareTag("DadoP2"))
+            else if (collision.gameObject.CompareTag("DadoP2"))
             {
                 if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 3 || collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion == 4)
                 {
-
                     modeloDatos.bajarZafiro_P2();
                 }
                 else if (collision.gameObject.GetComponent<DragAndDrop>().valor + bonificacion >= 5)
@@ -79,7 +115,7 @@ public class PuntuacionZafiro : MonoBehaviour
                 }
             
             GameManager.turnoJugador1 = false;
-            proximaActivacion.SetActive(false);
+            
 
         }
         }

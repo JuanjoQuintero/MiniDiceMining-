@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class DragAndDrop : MonoBehaviour
 {
     public Sprite[] imagenCara;
     public Vector2 startPosition;
+    public Vector2 huecoDado;
+    public EstoEsEldragç dragDados;
+    public bool sePuedeMover = false;
    
-   
+
     private float limiteVertical = 4.4f;
     private float limiteHorizontal = 8.3f;
     public int puntos = 0;
     public int valor = 0;
-    private Animator anim;
 
     private void Awake()
     {
-      
+        huecoDado = new Vector2(transform.position.x, transform.position.y);
         startPosition = new Vector2(transform.position.x, transform.position.y);
         valor = (int)Random.Range(0, imagenCara.Length) + 1;
         gameObject.GetComponent<SpriteRenderer>().sprite = imagenCara[valor - 1];
@@ -30,9 +33,8 @@ public class DragAndDrop : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-       
+    void Update() { 
+
 
         //Codigo para mantener un sprite 2d dentro de los límites de la pantalla
         if (transform.position.x >= limiteHorizontal)
@@ -55,47 +57,83 @@ public class DragAndDrop : MonoBehaviour
  }
 
    
-    private void OnMouseDown()
-    {    
-        OnMouseDrag();      
-    }
-     
-   void OnMouseDrag()
+    public void OnMouseDown()
     {
-        //if (GameManager.turnoJugador1 == true && gameObject.CompareTag("DadoP1"))
-            EstoEselDrag();
+        if (transform.tag == "DadoP1" && GameManager.turnoJugador1)
+        {
+            sePuedeMover = true;
+        }
+        else if (transform.tag == "DadoP2" && GameManager.turnoJugador1 == false)
+        {
+            sePuedeMover = true;
+        }
     }
+
+   public void OnMouseDrag()
+    {
+        if(sePuedeMover)
+        EstoEselDrag();
+    }
+
+    
 
     // Cuando soltamos el dado, vuelve a la posicion establecida, que cambia según el espacio e el que dejamos el dado
-    private void OnMouseUp()
-        {        
-            gameObject.transform.SetPositionAndRotation(startPosition, Quaternion.identity);       
-        }
+    public void OnMouseUp()
+    {
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    { 
+        transform.SetPositionAndRotation(huecoDado, Quaternion.identity);
+        sePuedeMover = false;
+        
+
+    }
+   
+   
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+        
+
         if (collision.gameObject.tag == "Rubi")
         {
-
-            startPosition = collision.gameObject.transform.position;
-            transform.SetPositionAndRotation(collision.transform.position, Quaternion.identity);
-
+            huecoDado = collision.gameObject.transform.position;
+            if (collision.GetComponent<PuntuacionRubi>().hayDado == true)
+            {
+                huecoDado = startPosition;
+            }
+            
+            transform.SetPositionAndRotation(huecoDado, Quaternion.identity);
+            
         }
 
-        else if (collision.gameObject.tag == "Zafiro")
+        else if (collision.gameObject.tag == "Zafiro" || collision.gameObject.tag == "Zafiro2")
         {
-            startPosition = collision.gameObject.transform.position;
-            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+           huecoDado = collision.gameObject.transform.position;
+            if (collision.GetComponent<PuntuacionZafiro>().hayDado == true)
+            {
+                huecoDado = startPosition;
+            }
+
+            transform.SetPositionAndRotation(huecoDado, Quaternion.identity);
+           
         }
         else if (collision.gameObject.tag == "Esmeralda")
         {
-            startPosition = collision.gameObject.transform.position;
-            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+            huecoDado = collision.gameObject.transform.position;
+            if (collision.GetComponent<PuntuacionEsmeralda>().hayDado == true)
+            {
+                huecoDado = startPosition;
+            }
+
+            transform.SetPositionAndRotation(huecoDado, Quaternion.identity);
         }
         else if (collision.gameObject.tag == "Mercado")
         {
-            startPosition = collision.gameObject.transform.position;
-            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+            huecoDado = collision.gameObject.transform.position;
+            if (collision.GetComponent<Mercado>().hayDado == true)
+            {
+                huecoDado = startPosition;
+            }
+            transform.SetPositionAndRotation(huecoDado, Quaternion.identity);
         }
     }
     
@@ -104,24 +142,26 @@ public class DragAndDrop : MonoBehaviour
     {
         if (collision.gameObject.tag == "Rubi" )
         {
-         transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+            huecoDado = startPosition;
+           // transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+         
         }
 
         else if (collision.gameObject.tag == "Zafiro")
         {
-           
-            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+            huecoDado = startPosition;
+            //transform.SetPositionAndRotation(startPosition, Quaternion.identity);
         }
 
         else if (collision.gameObject.tag == "Esmeralda")
         {
-            
-            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+            huecoDado = startPosition;
+            //transform.SetPositionAndRotation(startPosition, Quaternion.identity);
         }
         else if (collision.gameObject.tag == "Mercado")
         {
-            
-            transform.SetPositionAndRotation(startPosition, Quaternion.identity);
+            huecoDado = startPosition;
+            //transform.SetPositionAndRotation(startPosition, Quaternion.identity);
         }
         
     }
@@ -131,5 +171,7 @@ public class DragAndDrop : MonoBehaviour
         Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
         transform.position = new Vector3(pos_move.x, pos_move.y, transform.position.y);
     }
+
+   
     
 }

@@ -8,7 +8,8 @@ public class Instanciador : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Awake () {
+	void Awake ()
+    {
         GeneraDados();
 	}
 	
